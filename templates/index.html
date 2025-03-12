@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vườn Thông Minh</title>
+    <script>
+        function fetchData() {
+        fetch("/data")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("temperature").innerText = data.temperature + " °C";
+            document.getElementById("soil_moisture").innerText = data.soil_moisture;
+            document.getElementById("light").innerText = data.light + " Lux";
+            document.getElementById("water_level").innerText = data.water_level;
+        })
+        .catch(error => console.error("Lỗi tải dữ liệu!", error));
+    }
+
+    setInterval(fetchData, 5000);  // Cập nhật mỗi 5 giây
+    window.onload = fetchData;
+    </script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --danger-color: #F44336;
+            --warning-color: #FF9800;
+            --light-color: #FFEB3B;
+            --dark-color: #333;
+            --light-bg: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-content i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .card-value {
+font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .card-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-optimal {
+            background-color: #E8F5E9;
+            color: var(--primary-color);
+        }
+        
+        .status-warning {
+            background-color: #FFF3E0;
+            color: var(--warning-color);
+        }
+        
+        .status-danger {
+            background-color: #FFEBEE;
+            color: var(--danger-color);
+        }
+        
+        .pump-control {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .pump-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-on {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        .status-off {
+            background-color: var(--danger-color);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 0 10px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .pump-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .chart {
+            height: 300px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .history-table {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+            color: var(--dark-color);
+        }
+        
+        @media screen and (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .pump-controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                margin: 10px 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <i class="fas fa-leaf"></i>
+                <h1>Vườn Thông Minh</h1>
+            </div>
+        </header>
+        <div class="dashboard">
+            <div class="card">
+                <i class="fas fa-thermometer-half" style="color: var(--danger-color);"></i>
+                <h2 class="card-title">Nhiệt Độ</h2>
+                <div id="temperature" class="card-value">Đang tải...</div>
+                <div class="card-status status-optimal">Tối ưu</div>
+            </div>
+        
+            <div class="card">
+                <i class="fas fa-tint" style="color: var(--secondary-color);"></i>
+                <h2 class="card-title">Độ Ẩm Đất</h2>
+<div id="soil_moisture" class="card-value">Đang tải...</div>
+                <div class="card-status status-optimal">Tối ưu</div>
+            </div>
+        
+            <div class="card">
+                <i class="fas fa-sun" style="color: var(--light-color);"></i>
+                <h2 class="card-title">Ánh Sáng</h2>
+                <div id="light" class="card-value">Đang tải...</div>
+                <div class="card-status status-warning">Trung bình</div>
+            </div>
+        
+            <div class="card">
+                <i class="fas fa-water" style="color: var(--secondary-color);"></i>
+                <h2 class="card-title">Mực Nước</h2>
+                <div id="water_level" class="card-value">Đang tải...</div>
+                <div class="card-status status-optimal">Tối ưu</div>
+            </div>
+        </div>
+        
+        
+        <div class="pump-control">
+            <h2 class="card-title" style="font-size: 1.5rem; margin-bottom: 20px;">Điều Khiển Máy Bơm</h2>
+            
+            <div class="pump-status">
+                <div class="status-indicator status-off" id="pumpIndicator"></div>
+                <span id="pumpStatusText">Máy bơm đang tắt</span>
+            </div>
+            
+            <div class="pump-controls">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pumpToggle">
+                    <span class="slider"></span>
+                </label>
+                
+                <button class="btn btn-primary" id="btnSchedule">
+                    <i class="fas fa-clock"></i> Lịch Tưới
+                </button>
+                
+                <button class="btn btn-danger" id="btnEmergency">
+                    <i class="fas fa-exclamation-triangle"></i> Dừng Khẩn Cấp
+                </button>
+            </div>
+        </div>
+<!--         
+        <div class="chart-container">
+            <h2 class="chart-title">Thống Kê Trong 24 Giờ Qua</h2>
+            <div class="chart">
+                <img src="/api/placeholder/800/300" alt="Biểu đồ thống kê" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div> -->
+        
+        <div class="history-table">
+            <h2 class="chart-title">Lịch Sử Hoạt Động</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Sự kiện</th>
+                        <th>Độ ẩm</th>
+                        <th>Nhiệt độ</th>
+                        <th>Ánh sáng</th>
+                        <th>Trạng thái máy bơm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12/03/2025 08:30</td>
+                        <td>Tưới tự động</td>
+                        <td>45%</td>
+                        <td>26°C</td>
+<td>700 lux</td>
+                        <td>Bật</td>
+                    </tr>
+                    <tr>
+                        <td>12/03/2025 07:15</td>
+                        <td>Kiểm tra hệ thống</td>
+                        <td>50%</td>
+                        <td>25°C</td>
+                        <td>650 lux</td>
+                        <td>Tắt</td>
+                    </tr>
+                    <tr>
+                        <td>11/03/2025 18:45</td>
+                        <td>Tưới theo lịch</td>
+                        <td>40%</td>
+                        <td>27°C</td>
+                        <td>200 lux</td>
+                        <td>Bật</td>
+                    </tr>
+                    <tr>
+                        <td>11/03/2025 12:30</td>
+                        <td>Cảnh báo nhiệt độ cao</td>
+                        <td>65%</td>
+                        <td>32°C</td>
+                        <td>900 lux</td>
+                        <td>Tắt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 Hệ Thống Vườn Thông Minh | Phiên bản 1.0</p>
+        </footer>
+    </div>
+
+    <!-- <script>
+        // Toggle máy bơm
+        const pumpToggle = document.getElementById('pumpToggle');
+        const pumpIndicator = document.getElementById('pumpIndicator');
+        const pumpStatusText = document.getElementById('pumpStatusText');
+        
+        pumpToggle.addEventListener('change', function() {
+            if (this.checked) {
+                pumpIndicator.classList.remove('status-off');
+                pumpIndicator.classList.add('status-on');
+                pumpStatusText.textContent = 'Máy bơm đang hoạt động';
+            } else {
+                pumpIndicator.classList.remove('status-on');
+                pumpIndicator.classList.add('status-off');
+                pumpStatusText.textContent = 'Máy bơm đang tắt';
+            }
+        });
+        
+        // Các nút điều khiển
+        document.getElementById('btnSchedule').addEventListener('click', function() {
+            alert('Tính năng lịch tưới sẽ được phát triển trong phiên bản tiếp theo!');
+        });
+        
+        document.getElementById('btnEmergency').addEventListener('click', function() {
+            pumpToggle.checked = false;
+            pumpIndicator.classList.remove('status-on');
+            pumpIndicator.classList.add('status-off');
+            pumpStatusText.textContent = 'Máy bơm đã dừng khẩn cấp';
+            alert('Đã dừng máy bơm khẩn cấp!');
+        });
+        
+        // Mô phỏng cập nhật dữ liệu theo thời gian thực
+        setInterval(function() {
+            // Cập nhật giá trị độ ẩm với biến động nhẹ
+            const moistureValue = document.querySelector('.card:nth-child(1) .card-value');
+let moisture = parseInt(moistureValue.textContent);
+            moisture = moisture + Math.floor(Math.random() * 5) - 2;
+            moisture = Math.max(30, Math.min(90, moisture));
+            moistureValue.textContent = moisture + '%';
+            
+            // Cập nhật trạng thái theo giá trị
+            const moistureStatus = document.querySelector('.card:nth-child(1) .card-status');
+            if (moisture < 40) {
+                moistureStatus.className = 'card-status status-danger';
+                moistureStatus.textContent = 'Quá thấp';
+            } else if (moisture > 85) {
+                moistureStatus.className = 'card-status status-warning';
+                moistureStatus.textContent = 'Quá cao';
+            } else {
+                moistureStatus.className = 'card-status status-optimal';
+                moistureStatus.textContent = 'Tối ưu';
+            }
+            
+            // Tương tự có thể làm với các thông số khác
+        }, 5000);
+    </script>
+</body>
+</html>
+<td>700 lux</td>
+                        <td>Bật</td>
+                    </tr>
+                    <tr>
+                        <td>12/03/2025 07:15</td>
+                        <td>Kiểm tra hệ thống</td>
+                        <td>50%</td>
+                        <td>25°C</td>
+                        <td>650 lux</td>
+                        <td>Tắt</td>
+                    </tr>
+                    <tr>
+                        <td>11/03/2025 18:45</td>
+                        <td>Tưới theo lịch</td>
+                        <td>40%</td>
+                        <td>27°C</td>
+                        <td>200 lux</td>
+                        <td>Bật</td>
+                    </tr>
+                    <tr>
+                        <td>11/03/2025 12:30</td>
+                        <td>Cảnh báo nhiệt độ cao</td>
+                        <td>65%</td>
+                        <td>32°C</td>
+                        <td>900 lux</td>
+                        <td>Tắt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 Hệ Thống Vườn Thông Minh | Phiên bản 1.0</p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle máy bơm
+        const pumpToggle = document.getElementById('pumpToggle');
+        const pumpIndicator = document.getElementById('pumpIndicator');
+        const pumpStatusText = document.getElementById('pumpStatusText');
+        
+        pumpToggle.addEventListener('change', function() {
+            if (this.checked) {
+                pumpIndicator.classList.remove('status-off');
+                pumpIndicator.classList.add('status-on');
+                pumpStatusText.textContent = 'Máy bơm đang hoạt động';
+            } else {
+                pumpIndicator.classList.remove('status-on');
+                pumpIndicator.classList.add('status-off');
+                pumpStatusText.textContent = 'Máy bơm đang tắt';
+            }
+        });
+        
+        // Các nút điều khiển
+        document.getElementById('btnSchedule').addEventListener('click', function() {
+            alert('Tính năng lịch tưới sẽ được phát triển trong phiên bản tiếp theo!');
+        });
+        
+        document.getElementById('btnEmergency').addEventListener('click', function() {
+            pumpToggle.checked = false;
+            pumpIndicator.classList.remove('status-on');
+            pumpIndicator.classList.add('status-off');
+            pumpStatusText.textContent = 'Máy bơm đã dừng khẩn cấp';
+            alert('Đã dừng máy bơm khẩn cấp!');
+        });
+        
+        // Mô phỏng cập nhật dữ liệu theo thời gian thực
+        setInterval(function() {
+            // Cập nhật giá trị độ ẩm với biến động nhẹ
+            const moistureValue = document.querySelector('.card:nth-child(1) .card-value');
+let moisture = parseInt(moistureValue.textContent);
+            moisture = moisture + Math.floor(Math.random() * 5) - 2;
+            moisture = Math.max(30, Math.min(90, moisture));
+            moistureValue.textContent = moisture + '%';
+            
+            // Cập nhật trạng thái theo giá trị
+            const moistureStatus = document.querySelector('.card:nth-child(1) .card-status');
+            if (moisture < 40) {
+                moistureStatus.className = 'card-status status-danger';
+                moistureStatus.textContent = 'Quá thấp';
+            } else if (moisture > 85) {
+                moistureStatus.className = 'card-status status-warning';
+                moistureStatus.textContent = 'Quá cao';
+            } else {
+                moistureStatus.className = 'card-status status-optimal';
+                moistureStatus.textContent = 'Tối ưu';
+            }
+            
+            // Tương tự có thể làm với các thông số khác
+        }, 5000);
+    </script> -->
+</body>
+</html>

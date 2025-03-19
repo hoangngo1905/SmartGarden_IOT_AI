@@ -3,8 +3,8 @@
 <div align="center">
 
 <p align="center">
-  <img src="logo.png" alt="DaiNam University Logo" width="200"/>
-<img src="AIoTLab_logo.png" alt="AIoTLab Logo" width="170"/>
+  <img src="logo/logo.png" alt="DaiNam University Logo" width="200"/>
+<img src="logo/AIoTLab_logo.png" alt="AIoTLab Logo" width="170"/>
 
 </p>
 
@@ -19,7 +19,7 @@
 ## 📌 Poster
 
 <p align="center">
-<img src="Poster.JPG" alt="Poster Vườn Thông Minh" width="800"/>
+<img src="logo/Poster.JPG" alt="Poster Vườn Thông Minh" width="800"/>
 </p>
 
 ---
@@ -27,7 +27,7 @@
 ## 🔧 Kiến Trúc Hệ Thống  
 
 <p align="center">
- <img src="Model.png" alt="System Architecture" width="800"/>
+ <img src="logo/Model.png" alt="System Architecture" width="800"/>
 </p>
 
 Hệ thống vườn thông minh sử dụng **ESP32, Arduino, cảm biến môi trường** và một **máy chủ Flask** để theo dõi dữ liệu thời gian thực và điều khiển các thiết bị.
